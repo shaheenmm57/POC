@@ -5,11 +5,11 @@
             <componentInstance>
                 <componentInstanceProperties>
                     <name>ReportId</name>
-                    <value>607d8e3a-c5ed-47ba-9d8c-28d1f7fa1582</value>
+                    <value>bdc1df3c-7a3a-4ad4-941b-d0d499b7cc99</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>WorkspaceId</name>
-                    <value>cb51c114-6678-4c97-90d4-55baa6704ecb</value>
+                    <value>8748aae6-ab81-40df-bc99-01bf2bfccfcd</value>
                 </componentInstanceProperties>
                 <componentName>powerBiReport</componentName>
                 <identifier>c_powerBiReport</identifier>
@@ -19,20 +19,6 @@
         <type>Region</type>
     </flexiPageRegions>
     <flexiPageRegions>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>reportId</name>
-                    <value>607d8e3a-c5ed-47ba-9d8c-28d1f7fa1582</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>workspaceId</name>
-                    <value>cb51c114-6678-4c97-90d4-55baa6704ecb</value>
-                </componentInstanceProperties>
-                <componentName>powerBiReportAura</componentName>
-                <identifier>c_powerBiReportAura</identifier>
-            </componentInstance>
-        </itemInstances>
         <name>column2</name>
         <type>Region</type>
     </flexiPageRegions>

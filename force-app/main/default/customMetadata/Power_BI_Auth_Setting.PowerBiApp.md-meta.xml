@@ -4,14 +4,14 @@
     <protected>false</protected>
     <values>
         <field>ClientId__c</field>
-        <value xsi:type="xsd:string">43a97603-bfef-4539-840f-26893fcc75b1</value>
+        <value xsi:type="xsd:string">42ac4e76-ea80-4fc7-a818-54041d7cad3b</value>
     </values>
     <values>
         <field>ClientSecret__c</field>
-        <value xsi:type="xsd:string">QC88Q~teVmR~Eq~GE3jalsMslRLHxw92~3FcIcF4</value>
+        <value xsi:type="xsd:string">-5r8Q~DSZMNhxHR1cuiUb17yh3CjaNOa8bOXMbFh</value>
     </values>
     <values>
         <field>TenantId__c</field>
-        <value xsi:type="xsd:string">6f35b842-6dd2-4e28-9c14-624323636888</value>
+        <value xsi:type="xsd:string">cec3b02a-ea8c-40ed-a66f-a89023ac3286</value>
     </values>
 </CustomMetadata>
