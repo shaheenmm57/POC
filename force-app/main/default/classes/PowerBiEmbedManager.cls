@@ -52,6 +52,12 @@ public with sharing class PowerBiEmbedManager {
         public String embedUrl { get; set; } 
     	@AuraEnabled
         public String embedToken { get; set; } 
+        @AuraEnabled
+        public String visualName { get; set; }
+        @AuraEnabled
+        public String type { get; set; }
+    	@AuraEnabled
+        public String pageName { get; set; }
     	@AuraEnabled
         public DateTime embedTokenExpires { get; set; } 
         @AuraEnabled
@@ -78,11 +84,14 @@ public with sharing class PowerBiEmbedManager {
         // compose data for POST body
         ClientCredentialPostData postData = new ClientCredentialPostData();
 		postData.client_id = ClientId;
+        // postData.username = 'sohan.razak@novigosolutions.com';
+        // postData.password = 'AizaAyman@12345';
 		postData.client_info = '1';
 		postData.client_secret = ClientSecret;
 		postData.scope = 'https://analysis.windows.net/powerbi/api/.default';
 		postData.grant_type = 'client_credentials';        
         String postBody = postData.getPostData();
+        // String postBody ='client_id=43a97603-bfef-4539-840f-26893fcc75b1&client_info=1&scope=https://analysis.windows.net/powerbi/api/.default&grant_type=password&username=sohan.razak@novigosolutions.com&password=AizaAyman@12345';
         reqClientCredentialsFlow.setBody(postBody);
         system.debug(postBody);
 
@@ -98,7 +107,7 @@ public with sharing class PowerBiEmbedManager {
     }
    
     @AuraEnabled(cacheable=true)
-    public static PowerBiReportData getEmbeddingDataForReport(String WorkspaceId, String ReportId) {
+    public static PowerBiReportData getEmbeddingDataForReport(String WorkspaceId, String ReportId, String Username, String Datasets, String PageName, String Visual) {
 
         // get access token for Authorization header
         String access_token = getPowerBiAccessToken();        
@@ -106,9 +115,12 @@ public with sharing class PowerBiEmbedManager {
         // Call to Power BI Service API to get report data for embedding        
         HttpRequest reqGetReport = new HttpRequest();
         reqGetReport.setMethod('GET');
+        // String urlGetReport = 'https://api.powerbi.com/v1.0/myorg/groups/' + WorkspaceId + '/reports/' + 'd8fdc4db-070c-4a70-af25-b62ac6bd739e';
         String urlGetReport = 'https://api.powerbi.com/v1.0/myorg/groups/' + WorkspaceId + '/reports/' + ReportId;
+        // reqGetReport.setEndpoint('https://app.powerbi.com/reportEmbed?reportId=d8fdc4db-070c-4a70-af25-b62ac6bd739e&groupId=cb51c114-6678-4c97-90d4-55baa6704ecb&w=2&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly9XQUJJLUlORElBLVdFU1QtcmVkaXJlY3QuYW5hbHlzaXMud2luZG93cy5uZXQiLCJlbWJlZEZlYXR1cmVzIjp7InVzYWdlTWV0cmljc1ZOZXh0Ijp0cnVlfX0=');
         reqGetReport.setEndpoint(urlGetReport);
         reqGetReport.setHeader('Authorization', 'Bearer ' + access_token);
+
         
         Http http = new Http();        
         HttpResponse response = http.send(reqGetReport);
@@ -139,11 +151,14 @@ public with sharing class PowerBiEmbedManager {
 	    // Call to Power BI Service API to get embed token for report        
         HttpRequest reqGetEmbedToken = new HttpRequest();
         reqGetEmbedToken.setMethod('POST');
+        reqGetEmbedToken.setHeader('Content-Type', 'application/json');
         String urlGetEmbedToken = 'https://api.powerbi.com/v1.0/myorg/groups/' + WorkspaceId + '/reports/' + ReportId + '/GenerateToken';
+        // String urlGetEmbedToken = 'https://api.powerbi.com/v1.0/myorg/groups/' + WorkspaceId + '/reports/' + 'd8fdc4db-070c-4a70-af25-b62ac6bd739e' + '/GenerateToken';
         reqGetEmbedToken.setEndpoint(urlGetEmbedToken);
         reqGetEmbedToken.setHeader('Authorization', 'Bearer ' + access_token);    
-        reqGetEmbedToken.setBody('{"accessLevel": "View", "datasetId": "' + powerBiReport.datasetId + '"}');
-    
+        // reqGetEmbedToken.setBody('{"accessLevel": "View", "datasetId": "' + powerBiReport.datasetId + '"}');
+        reqGetEmbedToken.setBody('{"accessLevel": "View","identities":[{"username": "'+Username+'", "roles":["'+PageName+'"],"datasets":["'+Datasets+'"]}]}');
+        system.debug(reqGetEmbedToken.getBody());
         HttpResponse responseEmbedToken = http.send(reqGetEmbedToken);
 
         // check response for success
@@ -170,7 +185,12 @@ public with sharing class PowerBiEmbedManager {
         powerBiReportData.name = powerBiReport.name;
         powerBiReportData.embedUrl = powerBiReport.embedUrl;
         powerBiReportData.embedToken = embedToken.token;
+        powerBiReportData.type = (String.isBlank(Visual) || String.isBlank(PageName)) ?'report':'visual';
+        powerBiReportData.visualName = String.isBlank(Visual)? '':Visual;
+        powerBiReportData.pageName = String.isBlank(PageName)? '':PageName;
         powerBiReportData.embedTokenExpires = embedToken.expiration;
+        //  powerBiReportData.embedToken = 'H4sIAAAAAAAEACWUxw6r2BZE_-VOaYmcWuoBOWdswox8wESbA4bW-_dnqedbVVLVqv3vH7-4xqWo__z95yZl_Xkrj34FIJCYGJYxNerktumdHu4FyVeEVFnsjPKK6DzglT2ycBk26jSS_ipOuf7Ur7YO7EBKt0VrGZ0eHQNIUTt9Pkc1Je7naTbfWbOBossexhhDtUQLHscnrxH02tST-gYg_sogYXS-M5tyvLQhRirvCQXJLnaTM1j8WRS2kGcvMRwC-7vz4Ounp6CPnXnQIXy_ynbxasmWmIZmG6mFmTOQnXAMmAqdou58JUbMnKZ6C-s3_sPvkDz7BbG5yXWblwJfO_DtcapwZYUH5riT9DwUrtUU0qUrSjU8IYAbk-BiISnmy9I3YSXpxMk14tEclKUFiWI135FZPz9jn71ksi_e0sA0NRVmlB6GKK3vubPbUu5X2sSTvHxNKyFsZ3D_XHmqvY2cP7hJtbGiVMokgSf9SY2PBqXBs0wXtCPLHKPLYZ2sjvdjx-36SVzma_HC854orCLp4JLu4ZGwXTDtkKZA19IE9Le0rJDcN66y8C3f9Id97yZ2He1UduG-Cf61e10tYVRHMKaNynU5L00IrdGv2INpEwfxx6-aMNOqeTPbzQWb_SAhCRgxzQdXcbG0m68AxQ9x0aTWc1KsBPhWPk_U7BTX4_tWa44DW9daqK2j3_dnkI8JIYKjSR5Ifj-geA_T_PE3LyJ8MVSEaOMtBrMbKD3MM8Cy51BVeeWUoRysB2aaluPXmtBq7qGyQLdVxsMPacKwSLtyENMYMeho1pVmxtXTlKsDEbKxPMNe7vsI72x4Cyz3QkQWBbAyypA7SSUpulXHd7YrAtwlZxJ54W5q3bOkrAwlmRFTiw58RvEd1VKFvlNAAsWHmWEgNcqnvyLH_YokFIlKy-9o0gj--efPX3-k97Xui9Vcv5nFeTk0iShg184ZZdEj7ctLcUUsZz2LyS2NlNF0DamMcT0avlESgK5Qy-PUtYNndldCkmhoBBYxD8TyEpZgN50AN5VSmQKu7RsAd39tAmrl9RzRRTQfweh56VW_aj0qmUP26Mh47-fFsCMbXM5ts7uLpEz-6L24eRJd7FIT-6h5tPJv5qhVO73TaOQykhDN4c2NgCAcI3NaLc1N-E12wB3vi_7Q2imOX1tYtKWb50Qq1TQEnTkJu_AY2CXW6KXrkdVmN1ygr0zzWsJ5HaQic2i72TWSdKEZEni5RjZgLUNSWL5wICjHPWeUr5irSrHBLQI_Ed2U9PU9JisdjA_XIcUvK_wX87WC5m08fynPTc8ob9_PEYncqAYNJqfo_isj6n_s7vDd_M5SQ1-jk0hZsFq08PY5kObOVaeY52cLdAv2ci_wG2e9kHcLKtcGp-3gNI3Ws9f4BqrtmKni9T5H5ysbsE_DgcawTXpi4F2hJtbuCxxlnafHintAkz9N3dOX0iB_Yt_eTB0GbdZAfTLWJIqzbfLeJLG-_JofgjHyiayuxNXqNF1ksuywCvnV8gibF72dXZ9sGNnRi60kX4S5xzV5FsN-LKA5v-acI_M7iDuG4ET5cYz1WEqVIasbXp1lA7dPEnbXI11g4-obVbDeTZB6sHyUE3HfT3S2Gv77yUsDJeXRaM1KoVLcHeZYa6sfCJcmyyF2CSYLDvf3hmwmsOtMAm2pv7I9P38x_-__mR--51oGAAA=.eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly9XQUJJLUlORElBLVdFU1QtcmVkaXJlY3QuYW5hbHlzaXMud2luZG93cy5uZXQiLCJleHAiOjE2OTc3MjAyMDQsImFsbG93QWNjZXNzT3ZlclB1YmxpY0ludGVybmV0Ijp0cnVlfQ==';
+        //       powerBiReportData.embedTokenExpires = Date.valueOf('2023-10-19T10:18:46Z');
         
         return powerBiReportData;            
  

@@ -9,6 +9,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>PageName</name>
+                    <value>ReportSection</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>ReportId</name>
@@ -26,14 +27,14 @@
                     <name>WorkspaceId</name>
                     <value>cb51c114-6678-4c97-90d4-55baa6704ecb</value>
                 </componentInstanceProperties>
-                <componentName>powerBiReport</componentName>
-                <identifier>c_powerBiReport</identifier>
+                <componentName>powerBiReportVisual</componentName>
+                <identifier>c_powerBiReportVisual</identifier>
             </componentInstance>
         </itemInstances>
         <name>main</name>
         <type>Region</type>
     </flexiPageRegions>
-    <masterLabel>PowerBI</masterLabel>
+    <masterLabel>PowerBI Visual</masterLabel>
     <template>
         <name>flexipage:defaultAppHomeTemplate</name>
     </template>

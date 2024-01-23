@@ -8077,6 +8077,7 @@ var Embed = /** @class */ (function () {
         else {
             this.setIframe(true /* set EventListener to call load() on 'load' event*/, phasedRender, isBootstrap);
         }
+        console.log(this.report,'report');
     }
     /**
      * Create is not supported by default
@@ -8324,6 +8325,7 @@ var Embed = /** @class */ (function () {
      * @returns {Promise<void>}
      */
     Embed.prototype.setAccessToken = function (accessToken) {
+        console.log('accessToken');
         return __awaiter(this, void 0, void 0, function () {
             var embedType, response, response_5;
             return __generator(this, function (_a) {
@@ -8349,6 +8351,7 @@ var Embed = /** @class */ (function () {
                         throw response_5.body;
                     case 4: return [2 /*return*/];
                 }
+                console.log(response,'response');
             });
         });
     };
@@ -8375,6 +8378,7 @@ var Embed = /** @class */ (function () {
      * @returns {void}
      */
     Embed.prototype.populateConfig = function (config, isBootstrap) {
+        
         var _this = this;
         var _a, _b, _c, _d, _e, _f, _g, _h, _j;
         if (this.bootstrapConfig) {
@@ -11433,8 +11437,8 @@ var Service = /** @class */ (function () {
         var _this = this;
         if (config === void 0) { config = undefined; }
         container = (container && container instanceof HTMLElement) ? container : document.body;
-        var elements = Array.prototype.slice.call(container.querySelectorAll("[".concat(embed_1.Embed.embedUrlAttribute, "]")));
-        return elements.map(function (element) { return _this.embed(element, config); });
+        var elements = Array.prototype.slice.call(container?.querySelectorAll("[".concat(embed_1.Embed.embedUrlAttribute, "]")));
+        return elements?.map(function (element) { return _this.embed(element, config); })|| [];
     };
     /**
      * Given a configuration based on an HTML element,
@@ -11474,6 +11478,8 @@ var Service = /** @class */ (function () {
     };
     /** @hidden */
     Service.prototype.embedInternal = function (element, config, phasedRender, isBootstrap) {
+
+        
         if (config === void 0) { config = {}; }
         var component;
         var powerBiElement = element;
@@ -11481,11 +11487,14 @@ var Service = /** @class */ (function () {
             if (isBootstrap) {
                 throw new Error("Attempted to bootstrap element ".concat(element.outerHTML, ", but the element is already a powerbi element."));
             }
+            console.log('inside embedExisting');
             component = this.embedExisting(powerBiElement, config, phasedRender);
         }
         else {
+            console.log('inside embedNew');
             component = this.embedNew(powerBiElement, config, phasedRender, isBootstrap);
         }
+        console.log(component,'component');
         return component;
     };
     /** @hidden */
@@ -11527,6 +11536,7 @@ var Service = /** @class */ (function () {
         // Saves the type as part of the configuration so that it can be referenced later at a known location.
         config.type = componentType;
         var component = this.createEmbedComponent(componentType, element, config, phasedRender, isBootstrap);
+        console.log(component,'component1');
         element.powerBiEmbed = component;
         this.addOrOverwriteEmbed(component, element);
         return component;
@@ -11546,6 +11556,7 @@ var Service = /** @class */ (function () {
     Service.prototype.createEmbedComponent = function (componentType, element, config, phasedRender, isBootstrap) {
         var Component = utils.find(function (embedComponent) { return componentType === embedComponent.type.toLowerCase(); }, Service.components);
         if (Component) {
+            console.log(config,'config1');
             return new Component(this, element, config, phasedRender, isBootstrap);
         }
         // If component type is not legacy, search in registered components
@@ -11579,6 +11590,7 @@ var Service = /** @class */ (function () {
          * remove all event handlers from the DOM, then reset the element to initial state which removes iframe, and removes from list of embeds
          * then we can call the embedNew function which would allow setting the proper embedUrl and construction of object based on the new type.
          */
+        console.log('inside existign');
         if (typeof config.type === "string" && config.type !== component.config.type) {
             /**
              * When loading report after create we want to use existing Iframe to optimize load period

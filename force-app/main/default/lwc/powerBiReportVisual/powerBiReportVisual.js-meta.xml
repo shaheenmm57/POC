@@ -14,9 +14,9 @@
         <targetConfig targets="lightning__AppPage,lightning__HomePage,lightning__RecordPage">
             <property name="WorkspaceId" type="String" default="" label=" Workspace ID" description="Enter the Workspace ID"/>
             <property name="ReportId" type="String" default="" label="Report ID" description=""/>
-            <property name="Username" type="String" default="" label="User Number" description=""/>
+            <property name="Username" type="String" default="" label="User Name" description=""/>
             <property name="Datasets" type="String" default="" label="Datasets" description=""/>
-            <property name="PageName" type="String" default="" label="Role" description=""/>
+            <property name="PageName" type="String" default="" label="PageName" description=""/>
             <property name="Visual" type="String" default="" label="Visual" description=""/>
         </targetConfig>
     </targetConfigs>
