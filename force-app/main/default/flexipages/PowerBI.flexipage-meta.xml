@@ -5,37 +5,42 @@
             <componentInstance>
                 <componentInstanceProperties>
                     <name>Datasets</name>
-                    <value>c9119bb2-54ec-4f94-9b0b-e6783c87fac2</value>
+                    <value>4fdf5d56-fdc7-45f2-9d02-899fcad3cfcb</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>PageName</name>
+                    <value>GTS_Portal_Group_Manager</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>ReportId</name>
-                    <value>d8fdc4db-070c-4a70-af25-b62ac6bd739e</value>
+                    <value>e029b289-2a62-4afe-91ad-40df9f0f59d3</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>Username</name>
-                    <value>SohanRazak</value>
+                    <value>0058G000000H1juQAC</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>Visual</name>
-                    <value>75b84323a30760052e3e</value>
+                    <value>visual</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>WorkspaceId</name>
-                    <value>cb51c114-6678-4c97-90d4-55baa6704ecb</value>
+                    <value>8748aae6-ab81-40df-bc99-01bf2bfccfcd</value>
                 </componentInstanceProperties>
                 <componentName>powerBiReport</componentName>
                 <identifier>c_powerBiReport</identifier>
             </componentInstance>
         </itemInstances>
-        <name>main</name>
+        <name>column1</name>
+        <type>Region</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <name>column2</name>
         <type>Region</type>
     </flexiPageRegions>
     <masterLabel>PowerBI</masterLabel>
     <template>
-        <name>flexipage:defaultAppHomeTemplate</name>
+        <name>flexipage:appHomeTemplateTwoColumns</name>
     </template>
     <type>AppPage</type>
 </FlexiPage>

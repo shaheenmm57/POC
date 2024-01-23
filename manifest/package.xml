@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
 	<types>
+		<members>Power_BI</members>
+		<name>CustomTab</name>
+	</types>
+	<types>
 		<members>PowerBI</members>
 		<name>FlexiPage</name>
 	</types>
@@ -8,5 +12,5 @@
 		<members>*</members>
 		<name>LightningComponentBundle</name>
 	</types>
-	<version>55.0</version>
+	<version>58.0</version>
 </Package>
