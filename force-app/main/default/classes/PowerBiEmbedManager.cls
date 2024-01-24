@@ -84,14 +84,11 @@ public with sharing class PowerBiEmbedManager {
         // compose data for POST body
         ClientCredentialPostData postData = new ClientCredentialPostData();
 		postData.client_id = ClientId;
-        // postData.username = 'sohan.razak@novigosolutions.com';
-        // postData.password = 'AizaAyman@12345';
 		postData.client_info = '1';
 		postData.client_secret = ClientSecret;
 		postData.scope = 'https://analysis.windows.net/powerbi/api/.default';
 		postData.grant_type = 'client_credentials';        
         String postBody = postData.getPostData();
-        // String postBody ='client_id=43a97603-bfef-4539-840f-26893fcc75b1&client_info=1&scope=https://analysis.windows.net/powerbi/api/.default&grant_type=password&username=sohan.razak@novigosolutions.com&password=AizaAyman@12345';
         reqClientCredentialsFlow.setBody(postBody);
         system.debug(postBody);
 
